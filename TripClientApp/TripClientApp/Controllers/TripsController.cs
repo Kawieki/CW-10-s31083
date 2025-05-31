@@ -42,6 +42,10 @@ public class TripsController(IDbService dbService) : ControllerBase
         {
             return Conflict(e.Message);
         }
+        catch (FormatException e)
+        {
+            return BadRequest(e.Message);
+        }
         catch (Exception e)
         {
             return StatusCode(500, $"An unexpected error has occured: {e.Message}");
