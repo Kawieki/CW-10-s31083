@@ -8,12 +8,12 @@ namespace TripClientApp.Controllers;
 [Route("api/[controller]")]
 public class ClientsController(IDbService dbService) : ControllerBase
 {
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteClient([FromRoute] int id)
+    [HttpDelete("{idClient}")]
+    public async Task<IActionResult> DeleteClient([FromRoute] int idClient)
     {
         try
         {
-            await dbService.DeleteClientAsync(id);
+            await dbService.DeleteClientAsync(idClient);
             return NoContent();
         }
         catch (NotFoundException e)
