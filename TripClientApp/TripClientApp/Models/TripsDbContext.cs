@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TripClientApp.Models;
 
-public partial class MasterContext : DbContext
+public partial class TripsDbContext : DbContext
 {
-    public MasterContext()
+    public TripsDbContext()
     {
     }
 
-    public MasterContext(DbContextOptions<MasterContext> options)
+    public TripsDbContext(DbContextOptions<TripsDbContext> options)
         : base(options)
     {
     }
@@ -22,11 +22,7 @@ public partial class MasterContext : DbContext
     public virtual DbSet<Country> Countries { get; set; }
 
     public virtual DbSet<Trip> Trips { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=localhost,1433;User=SA;Password=yourStrong(!)Password;Integrated Security=False;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False");
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Client>(entity =>
