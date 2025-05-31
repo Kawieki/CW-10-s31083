@@ -105,6 +105,8 @@ public class DbService(TripsDbContext data) : IDbService
         {
             throw new TripAlreadyStartedException("The trip has already started");
         }
+
+        DateTime? paymentDateParsed = clientDto.PaymentDate != null ? ParseDate(clientDto.PaymentDate) : null;
         
         var newClient = new Client
         {
@@ -123,7 +125,7 @@ public class DbService(TripsDbContext data) : IDbService
         {
             IdClient = newClient.IdClient,
             IdTrip = trip.IdTrip,
-            PaymentDate = clientDto.PaymentDate != null ? ParseDate(clientDto.PaymentDate) : null,
+            PaymentDate = paymentDateParsed,
             RegisteredAt = DateTime.UtcNow
         };
         data.ClientTrips.Add(newClientTrip);
@@ -144,7 +146,25 @@ public class DbService(TripsDbContext data) : IDbService
 
     private DateTime ParseDate(string date)
     {
-        var acceptedFormats = new[] { "yyyy-MM-dd", "yyyy-MM-ddTHH:mm:ss", "dd/MM/yyyy", "MM/dd/yyyy", "dd-MM-yyyy", "yyyy/MM/dd" };
+        // nie wiem ile formatow powinno byc akceptowanych ale dalem prawie wszystkie :~~~D :3 
+        var acceptedFormats = new[]
+        {
+            "yyyy-MM-dd",
+            "yyyy-MM-ddTHH:mm:ss",
+            "yyyy-MM-dd HH:mm:ss",
+            "yyyy/MM/dd",
+            "yyyy/MM/dd HH:mm:ss",
+            "dd/MM/yyyy",
+            "dd/MM/yy",
+            "dd-MM-yyyy",
+            "dd-MM-yy",
+            "MM/dd/yyyy",
+            "M/d/yyyy",
+            "MM/dd/yy",
+            "M/d/yy",
+            "yyyyMMdd"
+        };
+        
         if (!DateTime.TryParseExact(date, acceptedFormats, CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedDate))
         {
             throw new FormatException("Invalid date format. Accepted formats: yyyy-MM-dd, dd/MM/yyyy, MM/dd/yyyy, etc.");

@@ -28,7 +28,7 @@ public class TripsController(IDbService dbService) : ControllerBase
     {
         try
         {
-            return Ok(await dbService.AddClientToTrip(idTrip, clientDto));
+            return CreatedAtAction(nameof(AddClientToTrip),await dbService.AddClientToTrip(idTrip, clientDto));
         }
         catch (ClientAlreadyExistsException e)
         {
